@@ -1,22 +1,20 @@
-#pragma once
+#include <atomic>
 #include <memory>
-#include <string>
 #include <thread>
 #include <vector>
-#include <atomic>
-#include "Connection.hpp"
 
+#include "Connection.hpp"
 class Peer {
    public:
     Peer(int port);
     ~Peer();
-    void run();
-    void start();
-    void connectTo(const std::string& ip, int port);
-    void broadcast(const std::string& msg);  // отправить всем
+    void run(); // running peer (blocking)
+    void start(); // startint peer
+    void connectTo(const std::string& ip, int port); 
+    void broadcast(const std::string& msg);  // send to all connections
 
    private:
-    void acceptLoop();  // слушает новые подключения
+    void acceptLoop();  // accepting new connections
 
     int listenSock = -1;
     int port;
