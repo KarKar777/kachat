@@ -1,14 +1,13 @@
-// C++ program to illustrate the client application in the
-// socket programming
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <unistd.h>
-
 #include <Peer.hpp>
-#include <cstring>
 #include <iostream>
 int main() {
-    Peer peer(12345);
+    std::cout << "Hi! This is a kachat - p2p messenger." << std::endl;
+    std::cout << "Enter port: " << std::flush;
+    int port;
+    std::cin >> port;
+
+    Peer peer(port);
+    
     peer.run();
     return 0;
 }

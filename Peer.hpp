@@ -8,17 +8,19 @@ class Peer {
    public:
     Peer(int port);
     ~Peer();
-    void run(); // running peer (blocking)
-    void start(); // startint peer
-    void connectTo(const std::string& ip, int port); 
+    void run();    // running peer (blocking)
+    void start();  // startint peer
+    void stop();
+    void connectTo(const std::string& ip, int port);
     void broadcast(const std::string& msg);  // send to all connections
+    void cli();
 
    private:
     void acceptLoop();  // accepting new connections
 
     int listenSock = -1;
     int port;
-    std::vector<std::shared_ptr<Connection>> connections;
+    std::vector<Connection*> connections;
     std::vector<std::thread> threads;
     std::atomic<bool> running{false};
 };

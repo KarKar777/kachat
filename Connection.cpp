@@ -13,13 +13,13 @@ void Connection::sendMsg(const std::string& msg) {
 
 void Connection::recvloop() {
     char buf[BUF_SIZE];
-    // std::cout << "OK\n";
     while (true) {
         int n = recv(sock, buf, BUF_SIZE - 1, 0);
-        // if (n <= 0) break;
+        std::cout << std::endl;
         for (int i = 0; i < n; i++) {
             std::cout << buf[i];
         }
-        // std::cout << std::endl;
+        std::cout << std::endl;
+        std::cout << ">>> " << std::flush;
     }
 }
