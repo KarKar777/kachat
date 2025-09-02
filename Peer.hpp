@@ -1,9 +1,15 @@
+#pragma once
 #include <atomic>
+#include <chrono>
 #include <memory>
+#include <random>
 #include <thread>
+#include <unordered_set>
 #include <vector>
 
 #include "Connection.hpp"
+#include "Utils.hpp"
+
 class Peer {
    public:
     Peer(int port);
@@ -20,7 +26,9 @@ class Peer {
 
     int listenSock = -1;
     int port;
+
     std::vector<Connection*> connections;
     std::vector<std::thread> threads;
     std::atomic<bool> running{false};
+    std::unordered_set<size_t> messageHashes;
 };

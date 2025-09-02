@@ -15,7 +15,7 @@ Peer::~Peer() {
 
     connections.clear();
     for (auto &t : threads) {
-        if (t.joinable()) t.join();
+        if (t.joinable() && std::this_thread::get_id() != t.get_id()) t.join();
     }
 }
 void Peer::stop() {
@@ -29,7 +29,7 @@ void Peer::stop() {
 
     connections.clear();
     for (auto &t : threads) {
-        if (t.joinable()) t.join();
+        if (t.joinable() && std::this_thread::get_id() != t.get_id()) t.join();
     }
 }
 
@@ -81,7 +81,7 @@ void Peer::acceptLoop() {
         auto conn = new Connection(clientSock);
         connections.push_back(conn);
 
-        threads.emplace_back([conn]() { conn->recvloop(); });
+        threads.emplace_back([this, conn]() { conn->recvloop(messageHashes); });
     }
 }
 
@@ -101,7 +101,7 @@ void Peer::connectTo(const std::string &ip, int port) {
     if (connect(sock, (sockaddr *)&addr, sizeof(addr)) == 0) {
         auto conn = new Connection(sock);
         connections.push_back(conn);
-        threads.emplace_back([conn]() { conn->recvloop(); });
+        threads.emplace_back([this, conn]() { conn->recvloop(messageHashes); });
         std::cout << "Connected to " << ip << ":" << port << std::endl;
     } else {
         std::cerr << "Connection failed" << std::endl;
